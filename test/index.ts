@@ -15,6 +15,7 @@ if (!!result?.error) {
 const Env = jetEnv({
   NodeEnv: str,
   IsLocal: bool,
+  DryRunEnabled: bool,
   Port: num,
   BackEndUrl: str,
   FrontEndUrl: str,
@@ -33,6 +34,7 @@ const Env = jetEnv({
 
 console.log(Env);
 console.log(Env.IsLocal);
+console.log(Env.DryRunEnabled);
 console.log(Env.Port);
 console.log(Env.S3BucketExp)
 console.log(Env.Aws.S3Credentials.AccessKeyId)
