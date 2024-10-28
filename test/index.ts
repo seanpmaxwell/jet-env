@@ -22,6 +22,7 @@ const Env = jetEnv({
   S3BucketName: ['S3_BUCKET_NAME', isStr],
   S3BucketUrl: 'S3_BUCKET_URL',
   S3BucketExp: ['S3_BUCKET_EXP', isDate],
+  // BadVal: 'SOME_BAD_VAL',
   AWS: {
     Credentials: {
       AccessKeyId: 'S3_CREDENTIALS_ACCESS_KEY_ID',

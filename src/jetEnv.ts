@@ -44,14 +44,16 @@ function jetEnv<T>(arg: T): RetVal<T> {
     }
     const propArg = arg[key];
     let envVarVal: unknown,
+      envVarName = '',
       vldrFn;
     // String
     if (_isStr(propArg)) {
+      envVarName = propArg;
       envVarVal = process.env[propArg];
       vldrFn = isStr;
     // Array
     } else if (Array.isArray(propArg)) {
-      const envVarName = propArg[0];
+      envVarName = propArg[0];
       if (!_isStr(propArg[0]) || typeof propArg[1] !== 'function') {
         throw new Error('Array must be in the format [string, function]');
       }
@@ -66,7 +68,7 @@ function jetEnv<T>(arg: T): RetVal<T> {
     }
     // Validate the value
     if (!!vldrFn && !vldrFn(envVarVal, (transVal: unknown) => envVarVal = transVal)) {
-      throw new Error(`The environment variable "${key}" was missing or invalid.`);
+      throw new Error(`The environment variable "${envVarName}" was missing or invalid.`);
     }
     // Append to retval
     retVal[key] = envVarVal;
