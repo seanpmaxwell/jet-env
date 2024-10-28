@@ -108,15 +108,15 @@ function _toBool(arg: unknown): boolean | undefined {
     const argF = arg.toLowerCase();
     if (argF === 'true') {
       return true;
-    } else if (arg === 'false') {
+    } else if (argF === 'false') {
       return false;
     } else if (arg === '0') {
       return false;
     } else if (arg === '1') {
       return true;
-    } else if (arg === 'yes') {
+    } else if (argF === 'yes') {
       return true;
-    } else if (arg === 'no') {
+    } else if (argF === 'no') {
       return false;
     }
   }
