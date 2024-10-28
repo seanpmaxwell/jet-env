@@ -19,7 +19,7 @@ The environment variable name will be constructed using the keys on the object. 
 
 If you want to override the behavior for naming the environment variables, you can pass an array instead of a function. The first value in the array must be a string and will be used to pull the environment variable (no prepending is done). The second value must be a validator-function<br/>
 
-If you want your environment variable value transformed before validation, there is a helper function export that your can wrap your validator function with. There are also 4 default validator-functions (`bool`, `num`, `date` and `str`) that come packaged by default (no point in really using `str` though cause you can just pass a string instead of an array).<br/>
+If you want your environment variable value transformed before validation, there is a helper function export that your can wrap your validator function with. There are also 4 default validator-functions (`bool`, `num`, `date` and `str`) that come packaged by default.<br/>
 
 Notes on validators: 
 - An empty string will not satisfy the `str` function.
