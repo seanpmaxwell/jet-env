@@ -104,7 +104,7 @@ function _isStr(arg: unknown): arg is string {
   return typeof arg === 'string' && arg !== '';
 }
 
-function _toBool(arg: unknown): boolean {
+function _toBool(arg: unknown): boolean | undefined {
   if (typeof arg === 'string') {
     const argF = arg.toLowerCase();
     if (argF === 'true') {
@@ -121,7 +121,6 @@ function _toBool(arg: unknown): boolean {
       return false;
     }
   }
-  return Boolean(arg);
 }
 
 function _isBool(arg: unknown): arg is boolean {
