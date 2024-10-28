@@ -1,8 +1,9 @@
 {
   "name": "jet-env",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple, TypeScript zero-dependency environment validation/initialization tool.",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "directories": {
     "test": "test"
   },
