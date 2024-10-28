@@ -44,12 +44,6 @@ const Env = jetEnv({
       AccessKeyId: 'S3_CREDENTIALS_ACCESS_KEY_ID',
       SecretAccessKey: 'S3_CREDENTIALS_SECRET_ACCESS_KEY',
     },
-    S3: {
-      Bucket: {
-        Name: 'S3_BUCKET_NAME',
-        Url: 'S3_BUCKET_URL',
-      },
-    },
   },
 });
 ```
