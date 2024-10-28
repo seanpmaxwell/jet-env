@@ -5,13 +5,13 @@ import jetEnv, { isBool, isDate, isNum, isStr, transform } from '../src/jetEnv';
 
 // Configure Dotenv
 const result = dotenv.config({
-  path: path.join(__dirname, './config/.env'),
+  path: path.join(__dirname, '.env'),
 });  
 if (!!result?.error) {
   throw result.error;
 }
 
-
+// Run jetEnv
 const Env = jetEnv({
   NodeEnv: 'NODE_ENV',
   IsLocal: ['IS_LOCAL', isBool],
@@ -26,12 +26,6 @@ const Env = jetEnv({
     Credentials: {
       AccessKeyId: 'S3_CREDENTIALS_ACCESS_KEY_ID',
       SecretAccessKey: 'S3_CREDENTIALS_SECRET_ACCESS_KEY',
-    },
-    S3: {
-      Bucket: {
-        Name: 'S3_BUCKET_NAME',
-        Url: 'S3_BUCKET_URL',
-      },
     },
   },
 });
