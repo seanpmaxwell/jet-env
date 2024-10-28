@@ -1,0 +1,45 @@
+{
+  "name": "jet-env",
+  "version": "1.0.0",
+  "description": "Simple, TypeScript zero-dependency environment validation/initialization tool.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "ts-node ./test",
+    "build": "rm -rf ./dist && tsc -p tsconfig.build.json",
+    "clean-install": "rm -rf ./node_modules && rm -r package-lock.json && npm i"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seanpmaxwell/jet-env.git"
+  },
+  "keywords": [
+    "jet",
+    "env",
+    "dotenv",
+    "environment",
+    "variable",
+    "initialization",
+    "validation",
+    "variables",
+    "envalid",
+    "load",
+    "loader",
+    "check"
+  ],
+  "author": "sean maxwell",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/seanpmaxwell/jet-env/issues"
+  },
+  "homepage": "https://github.com/seanpmaxwell/jet-env#readme",
+  "devDependencies": {
+    "@types/node": "^22.8.1",
+    "dotenv": "^16.4.5",
+    "ts-node": "^10.9.2",
+    "tslib": "^2.8.0",
+    "typescript": "^5.6.3"
+  }
+}

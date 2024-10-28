@@ -7,6 +7,10 @@
     "strict": true,
     "skipLibCheck": true 
   },
+  "include": [
+    "./src",
+    "./test"
+  ],
   "exclude": [
     "./node_modules"
   ]
