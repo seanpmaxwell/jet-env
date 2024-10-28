@@ -5,23 +5,26 @@
 - Small, quick, convenient zero-dependency. 
 - You can learn this tool in 5 minutes.
 - Works client or server side.
-- Let's you setup a completely type-safe object to hold all your environment variables.
-- Includes 4 build-in validator-functions: (`isBool`, `isNum`, `isDate` and `isStr`)
+- Automatically constructs environment-variable names from object keys.
+- Sets up a completely type-safe object to hold all your environment variables.
+- Includes 4 build-in validator-functions: (`bool`, `num`, `date` and `str`)
 - `transform()` wrapper for validator-functions includes if a value needs to be modified first.
-- Easier to learn and smaller han `envalid`:
+- Easier to learn and smaller han `envalid`.
 
 
 ## Overview
 This library does not load environment variables, but it provides a single function that will loop through an object and assignment an environment variable to each one. If the environment variable is `undefined` or the incorrect type, then an error will be thrown. <br/>
 
-You can validate your types by passing a 2 length array or a string. For the array, the first index must be the environment-variable name and the second a validator-function. The type assigned will be to whatever the type-predicate of your validator-function is. You can also just pass a string instead of an array and `string` will automatically be assumed as the type that needs to be validated.<br/>
+The environment variable name will be constructed using the keys on the object. `PascalCase` names will automatically be converted to `UPPER_SNAKE_CASE`. So if your environment variable is `NODE_ENV` then the key should be `NodeEnv` on the object key. This will work for nested objects tool. The parent-object's key name will be prepended to whatever the child-properties's key is.<br/>
 
-If you want your environment variable transformed before validation, there is a helper function export that your can wrap your validator function with. There are also 4 default validator-functions (`isBool`, `isNum`, `isDate` and `isStr`) that come packaged by default (no point in really using `isStr` though cause you can just pass a string instead of an array).<br/>
+If you want to override the behavior for naming the environment variables, you can pass an array instead of a function. The first value in the array must be a string and will be used to pull the environment variable (no prepending is done). The second value must be a validator-function<br/>
+
+If you want your environment variable value transformed before validation, there is a helper function export that your can wrap your validator function with. There are also 4 default validator-functions (`bool`, `num`, `date` and `str`) that come packaged by default (no point in really using `str` though cause you can just pass a string instead of an array).<br/>
 
 Notes on validators: 
-- An empty string will not satisfy the `isStr` function.
-- `isDate` will convert any valid date value (`string` or `number`) to a `Date` object and make sure it's valid.
-- For boolean types, there are several different variations which will satisfy the built-in `isBool` function:
+- An empty string will not satisfy the `str` function.
+- `date` will convert any valid date value (`string` or `number`) to a `Date` object and make sure it's valid.
+- For boolean types, there are several different variations which will satisfy the built-in `bool` function:
   - `false/true`, case doesn't matter 
   - `0`: `false`
   - `1`: `true`
@@ -31,22 +34,22 @@ Notes on validators:
 
 ## Quick Glance
 ```typescript
-import jetEnv, { isBool, isDate, isNum, transform } from '../src/jetEnv';
+import jetEnv, { bool, date, num, transform } from 'jet-env';
 
 const Env = jetEnv({
-  NodeEnv: 'NODE_ENV',
-  IsLocal: ['IS_LOCAL', isBool],
-  Port: ['PORT', isNum],
-  BackEndUrl: 'BACK_END_URL',
-  FrontEndUrl: 'FRONT_END_URL',
-  BypassDbConn: ['BYPASS_DB_CONN', transform(JSON.parse, isBool)],
-  S3BucketName: 'S3_BUCKET_NAME',
-  S3BucketUrl: 'S3_BUCKET_URL',
-  S3BucketExp: ['S3_BUCKET_EXP', isDate],
-  AWS: {
-    Credentials: {
-      AccessKeyId: 'S3_CREDENTIALS_ACCESS_KEY_ID',
-      SecretAccessKey: 'S3_CREDENTIALS_SECRET_ACCESS_KEY',
+  NodeEnv: str, // NODE_ENV
+  IsLocal: bool, // IS_LOCAL
+  Port: num, // PORT
+  BackEndUrl: str, // BACK_END_URL
+  FrontEndUrl: str, // FRONT_ENV_URL
+  BypassDbConn: ['BYPASS_DB_CONN', transform(JSON.parse, (arg) => arg === true)],
+  S3BucketName: ['S3_BUCKET_NAME', str],
+  S3BucketUrl: str, // S3_BUCKET_URL
+  S3BucketExp: date, // S3_BUCKET_EXP
+  Aws: {
+    S3Credentials: {
+      AccessKeyId: str, // AWS_S3_CREDENTIALS_ACCESS_KEY_ID
+      SecretAccessKey: str, // AWS_S3_CREDENTIALS_SECRET_ACCESS_KEY 
     },
   },
 });

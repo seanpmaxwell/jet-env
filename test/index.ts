@@ -1,6 +1,6 @@
 import path from 'path';
 import dotenv from 'dotenv';
-import jetEnv, { isBool, isDate, isNum, isStr, transform } from '../src/jetEnv';
+import jetEnv, { bool, date, num, str, transform } from '../src';
 
 
 // Configure Dotenv
@@ -13,20 +13,20 @@ if (!!result?.error) {
 
 // Run jetEnv
 const Env = jetEnv({
-  NodeEnv: 'NODE_ENV',
-  IsLocal: ['IS_LOCAL', isBool],
-  Port: ['PORT', isNum],
-  BackEndUrl: 'BACK_END_URL',
-  FrontEndUrl: 'FRONT_END_URL',
+  NodeEnv: str,
+  IsLocal: bool,
+  Port: num,
+  BackEndUrl: str,
+  FrontEndUrl: str,
   BypassDbConn: ['BYPASS_DB_CONN', transform(JSON.parse, (arg) => arg === true)],
-  S3BucketName: ['S3_BUCKET_NAME', isStr],
-  S3BucketUrl: 'S3_BUCKET_URL',
-  S3BucketExp: ['S3_BUCKET_EXP', isDate],
+  S3BucketName: ['S3_BUCKET_NAME', str],
+  S3BucketUrl: str,
+  S3BucketExp: date,
   // BadVal: 'SOME_BAD_VAL',
-  AWS: {
-    Credentials: {
-      AccessKeyId: 'S3_CREDENTIALS_ACCESS_KEY_ID',
-      SecretAccessKey: 'S3_CREDENTIALS_SECRET_ACCESS_KEY',
+  Aws: {
+    S3Credentials: {
+      AccessKeyId: str,
+      SecretAccessKey: str,
     },
   },
 });
@@ -35,4 +35,4 @@ console.log(Env);
 console.log(Env.IsLocal);
 console.log(Env.Port);
 console.log(Env.S3BucketExp)
-console.log(Env.AWS.Credentials.AccessKeyId)
+console.log(Env.Aws.S3Credentials.AccessKeyId)

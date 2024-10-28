@@ -11,8 +11,8 @@ type TValidatorFn<T> = (
 
 type RetVal<T> = {
   [K in keyof T]: (
-    T[K] extends string
-    ? string
+    T[K] extends TFunc
+    ? GetTypePredicate<T[K]>
     : T[K] extends unknown[]
     ? GetTypePredicate<T[K][1]>
     : T[K] extends object 
@@ -22,22 +22,22 @@ type RetVal<T> = {
 };
 
 type TArg = {
-  [key: string]: string | [string, TFunc] | TArg;
+  [key: string]: TFunc | [string, TFunc] | TArg;
 };
 
 
 // **** Functions **** //
 
 // Default validators
-export const isStr = transform(String, _isStr);
-export const isBool = transform(_toBool, _isBool);
-export const isNum = transform(Number, _isNum);
-export const isDate = transform(_toDate, _isDate);
+export const str = transform(String, _isStr);
+export const bool = transform(_toBool, _isBool);
+export const num = transform(Number, _isNum);
+export const date = transform(_toDate, _isDate);
 
 /**
  * Main
  */
-function jetEnv<T extends TArg>(arg: T): RetVal<T> {
+function jetEnv<T extends TArg>(arg: T, namePrepend = ''): RetVal<T> {
   if (typeof arg !== 'object') {
     throw new Error('Argument must be an object type');
   }
@@ -48,13 +48,12 @@ function jetEnv<T extends TArg>(arg: T): RetVal<T> {
     }
     const propArg = arg[key];
     let envVarVal: unknown,
-      envVarName = '',
+      envVarName = namePrepend + _toSnakeCase(key),
       vldrFn;
     // String
-    if (_isStr(propArg)) {
-      envVarName = propArg;
-      envVarVal = process.env[propArg];
-      vldrFn = isStr;
+    if (typeof propArg === 'function') {
+      envVarVal = process.env[envVarName];
+      vldrFn = propArg;
     // Array
     } else if (Array.isArray(propArg)) {
       envVarName = propArg[0];
@@ -65,7 +64,7 @@ function jetEnv<T extends TArg>(arg: T): RetVal<T> {
       vldrFn = propArg[1];
     // Nested object
     } else if (typeof propArg === 'object') {
-      envVarVal = jetEnv(propArg);
+      envVarVal = jetEnv(propArg, envVarName + '_');
     // Throw err
     } else {
       throw new Error('Each property must be a string or an array.');
@@ -132,7 +131,7 @@ function _isNum(arg: unknown): arg is number {
 }
 
 function _toDate(arg: unknown): Date {
-  if (isNum(Number(arg))) {
+  if (num(Number(arg))) {
     arg = Number(arg);
   }
   return new Date(arg as any);
@@ -142,6 +141,9 @@ function _isDate(arg: unknown): arg is Date {
   return arg instanceof Date && !isNaN(arg.getTime());
 }
 
+function _toSnakeCase(str: string): string {
+  return str.split(/\.?(?=[A-Z])/).join('_').toUpperCase();
+}
 
 // **** Export default **** //
 
