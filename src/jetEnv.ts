@@ -21,6 +21,10 @@ type RetVal<T> = {
   )
 };
 
+type TArg = {
+  [key: string]: string | [string, TFunc] | TArg;
+};
+
 
 // **** Functions **** //
 
@@ -33,7 +37,7 @@ export const isDate = transform(_toDate, _isDate);
 /**
  * Main
  */
-function jetEnv<T>(arg: T): RetVal<T> {
+function jetEnv<T extends TArg>(arg: T): RetVal<T> {
   if (typeof arg !== 'object') {
     throw new Error('Argument must be an object type');
   }
