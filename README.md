@@ -19,9 +19,8 @@ If you want your environment variable transformed before validation, there is a 
 
 Notes on validators: 
 - An empty string will not satisfy the `isStr` function.
-- `isDate` will convert any valid date value (`string` or `number`) to a `Date` object and make sure its valid.
-
-For boolean types, there are several different variations which will satisfy the built-in `isBool` function:
+- `isDate` will convert any valid date value (`string` or `number`) to a `Date` object and make sure it's valid.
+- For boolean types, there are several different variations which will satisfy the built-in `isBool` function:
   - `false/true`, case doesn't matter 
   - `0`: `false`
   - `1`: `true`
