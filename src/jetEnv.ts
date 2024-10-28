@@ -28,7 +28,7 @@ type RetVal<T> = {
 export const isStr = transform(String, _isStr);
 export const isBool = transform(_toBool, _isBool);
 export const isNum = transform(Number, _isNum);
-export const isDate = transform(Date, _isDate);
+export const isDate = transform(_toDate, _isDate);
 
 /**
  * Main
@@ -37,36 +37,42 @@ function jetEnv<T>(arg: T): RetVal<T> {
   if (typeof arg !== 'object') {
     throw new Error('Argument must be an object type');
   }
-  let retVal: any = {}
+  let retVal: Record<string, unknown> = {}
   for (const key in arg) {
     if (!_isStr(key)) {
       throw new Error('Each object key must be a string.')
     }
     const propArg = arg[key];
     let envVarVal: unknown,
-      validator;
+      vldrFn;
+    // String
     if (_isStr(propArg)) {
       envVarVal = process.env[propArg];
-      validator = transform(String, _isStr);
+      vldrFn = isStr;
+    // Array
     } else if (Array.isArray(propArg)) {
       const envVarName = propArg[0];
-      if (!_isStr(envVarName)) {
-        throw new Error('First argument to array must be a string representing the environment variables name.');
+      if (!_isStr(propArg[0]) || typeof propArg[1] !== 'function') {
+        throw new Error('Array must be in the format [string, function]');
       }
       envVarVal = process.env[envVarName];
-      validator = propArg[1];
+      vldrFn = propArg[1];
+    // Nested object
+    } else if (typeof propArg === 'object') {
+      envVarVal = jetEnv(propArg);
+    // Throw err
     } else {
-      throw new Error('Each key/value must be a string or an array.');
+      throw new Error('Each property must be a string or an array.');
     }
     // Validate the value
-    if (!validator(envVarVal, (transVal: unknown) => envVarVal = transVal)) {
+    if (!!vldrFn && !vldrFn(envVarVal, (transVal: unknown) => envVarVal = transVal)) {
       throw new Error(`The environment variable "${key}" was missing or invalid.`);
     }
     // Append to retval
-    retVal[key] = envVarVal as any;
+    retVal[key] = envVarVal;
   }
   // Return
-  return retVal;
+  return retVal as RetVal<T>;
 }
 
 /**
@@ -92,7 +98,7 @@ function _isStr(arg: unknown): arg is string {
   return typeof arg === 'string' && arg !== '';
 }
 
-function _toBool(arg: unknown): arg is boolean {
+function _toBool(arg: unknown): boolean {
   if (typeof arg === 'string') {
     const argF = arg.toLowerCase();
     if (argF === 'true') {
@@ -118,6 +124,13 @@ function _isBool(arg: unknown): arg is boolean {
 
 function _isNum(arg: unknown): arg is number {
   return typeof arg === 'number' && !isNaN(arg);
+}
+
+function _toDate(arg: unknown): Date {
+  if (isNum(Number(arg))) {
+    arg = Number(arg);
+  }
+  return new Date(arg as any);
 }
 
 function _isDate(arg: unknown): arg is Date {
