@@ -4,6 +4,7 @@
 ## Why jet-env
 - Small, quick, convenient zero-dependency. 
 - You can learn this tool in 5 minutes.
+- Works client or server side.
 - Let's you setup a completely type-safe object to hold all your environment variables.
 - Includes 4 build-in validator-functions: (`isBool`, `isNum`, `isDate` and `isStr`)
 - `transform()` wrapper for validator-functions includes if a value needs to be modified first.
