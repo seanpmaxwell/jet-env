@@ -42,7 +42,7 @@ const Env = jetEnv({
   Port: num, // PORT
   BackEndUrl: str, // BACK_END_URL
   FrontEndUrl: str, // FRONT_ENV_URL
-  BypassDbConn: ['BYPASS_DB_CONN', transform(JSON.parse, (arg) => arg === true)],
+  BypassDbConn: transform(JSON.parse, (arg) => arg === true),
   S3BucketName: ['S3_BUCKET_NAME', str],
   S3BucketUrl: str, // S3_BUCKET_URL
   S3BucketExp: date, // S3_BUCKET_EXP
@@ -53,6 +53,17 @@ const Env = jetEnv({
     },
   },
 });
+```
+
+
+## Overriding Default Behavior
+- The default behavior for formatting variable names, fetching values, and handling error messages can all be overridden by an optional `options` parameter as the second argument to `jetEnv`. Here's a overview of the `options` object:
+```typescript
+{
+  getValue?: (property: string, key?: string) => unknown; // Fetch the value, default is "=> process.env[property]"
+  variableNameFormatter?: (name: string) => string; // Set your own custom function for formatting environment-variable names from object keys.
+  onError?: (property: string) => void; // Change what happens when a validator-function fails (currently throws an error)
+}
 ```
 
 

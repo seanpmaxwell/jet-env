@@ -11,7 +11,7 @@ if (!!result?.error) {
   throw result.error;
 }
 
-// Run jetEnv
+// Run jetEnv with default options
 const Env = jetEnv({
   NodeEnv: str,
   IsLocal: bool,
@@ -19,7 +19,7 @@ const Env = jetEnv({
   Port: num,
   BackEndUrl: str,
   FrontEndUrl: str,
-  BypassDbConn: ['BYPASS_DB_CONN', transform(JSON.parse, (arg) => arg === true)],
+  BypassDbConn: transform(JSON.parse, (arg) => arg === true),
   S3BucketName: ['S3_BUCKET_NAME', str],
   S3BucketUrl: str,
   S3BucketExp: date,
@@ -30,6 +30,7 @@ const Env = jetEnv({
       SecretAccessKey: str,
     },
   },
+  Oauth: bool,
 });
 
 console.log(Env);
@@ -38,3 +39,18 @@ console.log(Env.DryRunEnabled);
 console.log(Env.Port);
 console.log(Env.S3BucketExp)
 console.log(Env.Aws.S3Credentials.AccessKeyId)
+
+
+
+// Run jetEnv with "custom" options
+const Env2 = jetEnv({
+  NodeEnv: str,
+  IsLocal: bool,
+  Dog: str,
+}, {
+  getValue: (property: string) => (Env as any)[property], 
+  variableNameFormatter: (name: string) => name,
+  onError: (property: string) => console.error(`Variable "${property}" was missing or invalid.`),
+});
+
+console.log(Env2)
