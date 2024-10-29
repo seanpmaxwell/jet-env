@@ -1,13 +1,21 @@
+/* eslint-disable no-console */
+/* eslint-disable max-len */
 import { join, resolve } from 'path';
 import dotenv from 'dotenv';
 import { expect, test } from 'vitest';
 
 import jetEnv, { bool, date, num, str, transform } from '../src';
 
+
+// **** Run unit-tests **** //
+
+/**
+ * Test default options.
+ */
 test('jetEnv with default options', () => {
   // Configure dotenv
   dotenv.config({
-    path: join(resolve(), '/test', '.env')
+    path: join(resolve(), '/test', '.env'),
   });
   
   const Env = jetEnv({
@@ -53,6 +61,9 @@ test('jetEnv with default options', () => {
   expect(Env).toStrictEqual(expectedResult);
 });
 
+/**
+ * Test custom options.
+ */
 test('jetEnv with custom options', () => {
   const customEnv = {
     STAGE: 'development',

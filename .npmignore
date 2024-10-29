@@ -3,6 +3,7 @@
 # ignore dev files
 src
 test
+.vscode
 
 # not needed npm stuff
 package-lock.json

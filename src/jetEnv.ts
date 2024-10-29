@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable n/no-process-env */
+
 // **** Types **** //
 
 interface IOptions {
-  getValue?: (property: string, key?: string) => unknown; // Default is process.env
+  getValue?: (property: string, key?: string) => unknown;
   variableNameFormatter?: (name: string) => string;
   onError?: (property: string) => void;
 }
@@ -26,31 +29,29 @@ type RetVal<T> = {
   )
 };
 
-type TArg = {
-  [key: string]: TFunc | [string, TFunc] | TArg;
+interface IArg {
+  [key: string]: TFunc | [string, TFunc] | IArg;
 };
 
 
 // **** Functions **** //
 
-// Default validators
-export const str = transform(String, _isStr);
-export const bool = transform(_toBool, _isBool);
-export const num = transform(Number, _isNum);
-export const date = transform(_toDate, _isDate);
-
 /**
  * Main
  */
-function jetEnv<T extends TArg>(arg: T, optionsParam?: IOptions, namePrepend = ''): RetVal<T> {
+function jetEnv<T extends IArg>(
+  arg: T,
+  optionsParam?: IOptions,
+  namePrepend = '',
+): RetVal<T> {
   if (!!arg && typeof arg !== 'object') {
     throw new Error('Argument must be an object type');
   }
   const options = { ..._getDefaultOptions(), ...optionsParam };
-  let retVal: Record<string, unknown> = {}
+  const retVal: Record<string, unknown> = {};
   for (const key in arg) {
     if (!_isStr(key)) {
-      throw new Error('Each object key must be a string.')
+      throw new Error('Each object key must be a string.');
     }
     const propArg = arg[key];
     let envVarVal: unknown,
@@ -76,7 +77,7 @@ function jetEnv<T extends TArg>(arg: T, optionsParam?: IOptions, namePrepend = '
       throw new Error('Each property must be a string or an array.');
     }
     // Validate the value
-    if (!!vldrFn && !vldrFn(envVarVal, (transVal: unknown) => envVarVal = transVal)) {
+    if (!!vldrFn && !vldrFn(envVarVal, (tval: unknown) => envVarVal = tval)) {
       options.onError(envVarName);
     }
     // Append to retval
@@ -103,21 +104,53 @@ export function transform<T>(
 }
 
 
-// **** Helpers **** //
+// **** Public Validators **** //
 
+export const str = transform(String, _isStr);
+export const bool = transform(_toBool, _isBool);
+export const num = transform(Number, _isNum);
+export const date = transform(_toDate, _isDate);
+
+
+// **** Util **** //
+
+/**
+ * Get the default options.
+ */
 function _getDefaultOptions(): Required<IOptions> {
   return {
     getValue: (property: string) => process.env[property],
     variableNameFormatter: _toSnakeCase,
     onError: _onError,
-  }
+  };
 }
 
+/**
+ * Any expression before an UpperCase letter
+ */
+function _toSnakeCase(str: string): string {
+  return str.split(/\.?(?=[A-Z])/).join('_').toUpperCase();
+}
+
+/**
+ * Default Error behavior
+ */
+function _onError(envVarName: string): void {
+  throw new Error(`The environment variable "${envVarName}" was missing ` + 
+    'or invalid.');
+}
+
+/**
+ * Check non-empty string
+ */
 function _isStr(arg: unknown): arg is string {
-  return typeof arg === 'string' && arg !== '';
+  return (typeof arg === 'string' && arg !== '');
 }
 
-function _toBool(arg: unknown): boolean | unknown {
+/**
+ * Convert some string types to bool
+ */
+function _toBool(arg: unknown): unknown {
   if (typeof arg === 'string') {
     arg = arg.toLowerCase();
     if (arg === 'true') {
@@ -137,34 +170,38 @@ function _toBool(arg: unknown): boolean | unknown {
   return arg;
 }
 
+/**
+ * Is boolean
+ */
 function _isBool(arg: unknown): arg is boolean {
-  return typeof arg === 'boolean';
-}
-
-function _isNum(arg: unknown): arg is number {
-  return typeof arg === 'number' && !isNaN(arg);
-}
-
-function _toDate(arg: unknown): Date {
-  if (num(Number(arg))) {
-    arg = Number(arg);
-  }
-  return new Date(arg as any);
-}
-
-function _isDate(arg: unknown): arg is Date {
-  return arg instanceof Date && !isNaN(arg.getTime());
+  return (typeof arg === 'boolean');
 }
 
 /**
- * Any expression before an UpperCase letter
+ * Is number.
  */
-function _toSnakeCase(str: string): string {
-  return str.split(/\.?(?=[A-Z])/).join('_').toUpperCase();
+function _isNum(arg: unknown): arg is number {
+  return (typeof arg === 'number' && !isNaN(arg));
 }
 
-function _onError(envVarName: string): void {
-  throw new Error(`The environment variable "${envVarName}" was missing or invalid.`);
+/**
+ * Convert unknown to date object.
+ */
+function _toDate(arg: unknown): unknown {
+  if (num(Number(arg))) {
+    arg = Number(arg);
+  }
+  if (_isStr(arg) || _isNum(arg) || _isDate(arg)) {
+    return new Date(arg as Date);
+  }
+  return arg;
+}
+
+/**
+ * Check if instance of valid Date.
+ */
+function _isDate(arg: unknown): arg is Date {
+  return (arg instanceof Date && !isNaN(arg.getTime()));
 }
 
 
