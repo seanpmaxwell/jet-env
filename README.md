@@ -42,7 +42,7 @@ const Env = jetEnv({
   Port: num, // PORT
   BackEndUrl: str, // BACK_END_URL
   FrontEndUrl: str, // FRONT_ENV_URL
-  BypassDbConn: transform(JSON.parse, (arg) => arg === true),
+  BypassDbConn: transform(JSON.parse, (arg) => arg === true)),
   S3BucketName: ['S3_BUCKET_NAME', str],
   S3BucketUrl: str, // S3_BUCKET_URL
   S3BucketExp: date, // S3_BUCKET_EXP
