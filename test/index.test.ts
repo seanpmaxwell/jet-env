@@ -4,7 +4,6 @@ import { expect, test } from 'vitest';
 
 import jetEnv, { bool, date, num, str, transform } from '../src';
 
-// Run jetEnv with default options
 test('jetEnv with default options', () => {
   // Configure dotenv
   dotenv.config({
@@ -55,7 +54,6 @@ test('jetEnv with default options', () => {
 });
 
 test('jetEnv with custom options', () => {
-  // Run jetEnv with "custom" options
   const customEnv = {
     STAGE: 'development',
     IS_LOCAL: 'false',
