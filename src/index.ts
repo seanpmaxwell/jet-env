@@ -1,5 +1,1 @@
-import jetEnv from './jetEnv';
-
-
-export { transform, str, bool, num, date } from './jetEnv';
-export default jetEnv;
+export { default, transform, str, bool, num, date } from './jetEnv';

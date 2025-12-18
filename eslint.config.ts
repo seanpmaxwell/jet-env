@@ -1,38 +1,22 @@
-import eslint from '@eslint/js';
+import js from '@eslint/js';
+import globals from 'globals';
 import tseslint from 'typescript-eslint';
-import stylisticTs from '@stylistic/eslint-plugin-ts';
-import nodePlugin from 'eslint-plugin-n';
+import { defineConfig, globalIgnores } from 'eslint/config';
+import stylistic from '@stylistic/eslint-plugin';
 
 
 export default tseslint.config(
-  eslint.configs.recommended,
-  nodePlugin.configs['flat/recommended-script'],
-  ...tseslint.configs.strictTypeChecked,
-  ...tseslint.configs.stylisticTypeChecked,
-  { 
-    ignores: [
-      '**/node_modules/*',
-      '**/*.mjs',
-      '**/*.js',
-    ],
-  },
+  globalIgnores(['dist']),
   {
+        files: ['**/*.{ts,tsx}'],
+    extends: [js.configs.recommended, tseslint.configs.recommended],
     languageOptions: {
-      parserOptions: {
-        project: './tsconfig.json',
-        warnOnUnsupportedTypeScriptVersion: false,
-      },
+      ecmaVersion: 2020,
+      globals: globals.browser,
     },
-  },
-  {
     plugins: {
-      '@stylistic/ts': stylisticTs,
+      '@stylistic': stylistic,
     },
-  },
-  {
-    files: ['**/*.ts'],
-  },
-  {
     rules: {
       '@typescript-eslint/explicit-member-accessibility': 'warn',
       '@typescript-eslint/no-misused-promises': 0,

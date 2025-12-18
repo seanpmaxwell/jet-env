@@ -1,35 +1,49 @@
 {
   "name": "jet-env",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Simple, TypeScript zero-dependency environment validation/initialization tool.",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
-  "directories": {
-    "test": "test"
+  "type": "module",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "browser": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/types/index.d.ts"
+    }
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "test": "vitest",
-    "build": "rm -rf ./dist && tsc -p tsconfig.build.json",
-    "clean-install": "rm -rf ./node_modules && rm -r package-lock.json && npm i",
-    "lint": "eslint --flag unstable_ts_config"
+    "build": "npm run clean && tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json && tsc -p tsconfig.types.json",
+    "clean": "rm -rf dist && rm -rf cjs && rm -rf esm",
+    "clean:install": "rm -rf ./node_modules && rm -r package-lock.json && npm i",
+    "pre-publish": "mv README.md README-git && mv README-npm README.md",
+    "post-publish": "mv README.md README-npm && mv README-git README.md",
+    "test": "NODE_ENV=test vitest"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/seanpmaxwell/jet-env.git"
   },
   "keywords": [
-    "jet",
+    "config",
+    "environment variables",
+    "env validation",
+    "env schema",
+    "typescript env",
+    "runtime config",
+    "validator",
+    "transform",
+    "zero dependency",
+    "jet env",
     "env",
-    "dotenv",
     "environment",
-    "variable",
-    "initialization",
-    "validation",
-    "variables",
-    "envalid",
-    "load",
-    "loader",
-    "check"
+    "jet paths",
+    "envalid alternative"
   ],
   "author": "sean maxwell",
   "license": "MIT",
@@ -38,18 +52,16 @@
   },
   "homepage": "https://github.com/seanpmaxwell/jet-env#readme",
   "devDependencies": {
-    "@eslint/js": "^9.11.1",
-    "@stylistic/eslint-plugin-ts": "^2.8.0",
-    "@types/eslint__js": "^8.42.3",
+    "@eslint/js": "^9.26.0",
+    "@stylistic/eslint-plugin": "^5.6.1",
     "@types/node": "^22.8.1",
-    "dotenv": "^16.4.5",
-    "eslint": "^9.11.1",
-    "eslint-plugin-n": "^17.10.3",
+    "dotenv": "^17.2.3",
+    "eslint": "^9.26.0",
+    "eslint-plugin-n": "^17.17.0",
     "jiti": "^2.3.3",
-    "ts-node": "^10.9.2",
     "tslib": "^2.8.0",
-    "typescript": "^5.6.3",
-    "typescript-eslint": "^8.8.0",
-    "vitest": "^2.1.4"
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.50.0",
+    "vitest": "^4.0.15"
   }
 }
