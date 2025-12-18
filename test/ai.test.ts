@@ -5,8 +5,10 @@ import jetEnv, { bool, num, str, transform } from '../src';
 
 describe('jetEnv schema validation', () => {
   test('throws when schema is not an object', () => {
-    expect(() => jetEnv('not-an-object' as never)).toThrow('Argument must be an object type');
-    expect(() => jetEnv(42 as never)).toThrow('Argument must be an object type');
+    expect(() => jetEnv('not-an-object' as never))
+      .toThrow('Argument must be an object type');
+    expect(() => jetEnv(42 as never))
+      .toThrow('Argument must be an object type');
   });
 
   test('throws for invalid property definitions', () => {
