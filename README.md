@@ -78,7 +78,7 @@ console.log(`Running ${Env.NodeEnv} at port ${Env.Port}`);
 ```
 
 `jetEnv` does not load `.env` files. Use tools like `dotenv`, your platform secrets manager, or CI/CD variables, then let `jetEnv` validate and expose the shape you expect.
-<br/>
+<br/><br/>
 
 
 ## Validators at a Glance 👀
@@ -89,7 +89,7 @@ console.log(`Running ${Env.NodeEnv} at port ${Env.Port}`);
 | `bool` | Accepts `true/false`, `1/0`, `yes/no`. | Case-insensitive for string inputs. |
 | `date` | Converts to `Date` instance. | Rejects invalid dates. |
 | `transform(fn, validator)` | Pre-processes before validating. | Perfect for JSON parsing or casting lists. |
-<br/>
+<br/><br/><br/>
 
 
 ## Customizing Behavior 🎛️ 
