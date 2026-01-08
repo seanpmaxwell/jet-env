@@ -89,7 +89,8 @@ console.log(`Running ${Env.NodeEnv} at port ${Env.Port}`);
 | `bool` | Accepts `true/false`, `1/0`, `yes/no`. | Case-insensitive for string inputs. |
 | `date` | Converts to `Date` instance. | Rejects invalid dates. |
 | `transform(fn, validator)` | Pre-processes before validating. | Perfect for JSON parsing or casting lists. |
-<br/><br/><br/>
+
+<br/>
 
 
 ## Customizing Behavior 🎛️ 
