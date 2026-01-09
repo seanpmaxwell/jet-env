@@ -117,4 +117,8 @@ const Env = jetEnv(schema, {
 
 ---
 
-Happy coding! If you build something cool or find a rough edge, please open an issue or PR so the community can benefit too.
+<br/><b>***</b><br/>
+
+## 📄 License 
+
+MIT © [seanpmaxwell1](LICENSE)
