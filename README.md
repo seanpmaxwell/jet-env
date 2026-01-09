@@ -29,7 +29,7 @@
 
 <br/><b>***</b><br/>
 
-## ✨ Features 
+## Features 
 - Automatic conversion from `PascalCase` keys to `UPPER_SNAKE_CASE` environment variable names, including deeply nested structures.
 - Tiny footprint (no dependencies) with first-class TypeScript types so your `Env` object stays type-safe everywhere.
 - Built-in validators (`bool`, `num`, `date`, `str`) plus a `transform` wrapper for pre-processing values before validation.
@@ -38,7 +38,7 @@
 
 <br/><b>***</b><br/>
 
-## 📦 Installation
+## Installation
 
 ```bash
 npm install jet-paths
@@ -50,7 +50,7 @@ pnpm add jet-paths
 
 <br/><b>***</b><br/>
 
-## ⚡ Quick Start
+## Quick Start
 `jetEnv` walks an object definition, maps each key to an environment variable, and validates the runtime value.
 
 ```typescript
@@ -81,7 +81,7 @@ console.log(`Running ${Env.NodeEnv} at port ${Env.Port}`);
 
 <br/><b>***</b><br/>
 
-## 👀 Validators at a Glance
+## Validators at a Glance
 | Validator | Description | Notes |
 | --- | --- | --- |
 | `str` | Ensures a non-empty string. | Empty values fail validation. |
@@ -92,7 +92,7 @@ console.log(`Running ${Env.NodeEnv} at port ${Env.Port}`);
 
 <br/><b>***</b><br/>
 
-## 🎛️ Customizing Behavior
+## Customizing Behavior
 Pass an optional `options` object as the second argument to `jetEnv` to override the core behavior. Every property is optional, so you can extend only what you need.
 
 ```typescript
@@ -111,7 +111,7 @@ const Env = jetEnv(schema, {
 
 <br/><b>***</b><br/>
 
-## 💬 Error Messaging Tips
+## Error Messaging Tips
 - Mention the full path (e.g., `Aws.S3Credentials.AccessKeyId`) in your custom `onError` implementation so missing variables are obvious in logs.
 - Co-locate your schema definition with your application's bootstrap so failures happen before the app starts serving traffic.
 
