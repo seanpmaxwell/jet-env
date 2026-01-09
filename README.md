@@ -20,25 +20,25 @@
 
 
 ## Table of Contents 
-1. [Features](#features) ✨
-2. [Installation](#installation) 📦
-3. [Quick Start](#quick-start) ⚡
-4. [Validators at a Glance](#validators-at-a-glance) 👀
-5. [Customizing Behavior](#customizing-behavior) 🎛️ 
-6. [Error Messaging Tips](#error-messaging-tips) 💬
-<br/>
+1. [Features](#features)
+2. [Installation](#installation)
+3. [Quick Start](#quick-start)
+4. [Validators at a Glance](#validators-at-a-glance)
+5. [Customizing Behavior](#customizing-behavior)
+6. [Error Messaging Tips](#error-messaging-tips)
 
+<br/><b>***</b><br/>
 
-## Features ✨
+## ✨ Features 
 - Automatic conversion from `PascalCase` keys to `UPPER_SNAKE_CASE` environment variable names, including deeply nested structures.
 - Tiny footprint (no dependencies) with first-class TypeScript types so your `Env` object stays type-safe everywhere.
 - Built-in validators (`bool`, `num`, `date`, `str`) plus a `transform` wrapper for pre-processing values before validation.
 - Works in Node.js or the browser (if you can access your environment variables with `process.env[]`) and let `jet-env` enforce shape and type.
 - Friendly API that you can learn in minutes, yet customizable through options for fetching values, formatting names, and error handling.
-<br/>
 
+<br/><b>***</b><br/>
 
-## Installation 📦
+## 📦 Installation
 
 ```bash
 npm install jet-paths
@@ -47,10 +47,10 @@ yarn add jet-paths
 # or
 pnpm add jet-paths
 ```
-<br/>
 
+<br/><b>***</b><br/>
 
-## Quick Start ⚡
+## ⚡ Quick Start
 `jetEnv` walks an object definition, maps each key to an environment variable, and validates the runtime value.
 
 ```typescript
@@ -78,10 +78,10 @@ console.log(`Running ${Env.NodeEnv} at port ${Env.Port}`);
 ```
 
 `jetEnv` does not load `.env` files. Use tools like `dotenv`, your platform secrets manager, or CI/CD variables, then let `jetEnv` validate and expose the shape you expect.
-<br/><br/>
 
+<br/><b>***</b><br/>
 
-## Validators at a Glance 👀
+## 👀 Validators at a Glance
 | Validator | Description | Notes |
 | --- | --- | --- |
 | `str` | Ensures a non-empty string. | Empty values fail validation. |
@@ -90,10 +90,9 @@ console.log(`Running ${Env.NodeEnv} at port ${Env.Port}`);
 | `date` | Converts to `Date` instance. | Rejects invalid dates. |
 | `transform(fn, validator)` | Pre-processes before validating. | Perfect for JSON parsing or casting lists. |
 
-<br/>
+<br/><b>***</b><br/>
 
-
-## Customizing Behavior 🎛️ 
+## 🎛️ Customizing Behavior
 Pass an optional `options` object as the second argument to `jetEnv` to override the core behavior. Every property is optional, so you can extend only what you need.
 
 ```typescript
@@ -109,10 +108,10 @@ const Env = jetEnv(schema, {
 - **getValue:** Fetch the value, default is `(propertyName: string)=> process.env[property]`
 - **variableNameFormatter:** Set your own custom function for formatting environment-variable names from object keys.
 - **onError:** Swap the default error handling for your own logic.
-<br/>
 
+<br/><b>***</b><br/>
 
-## Error Messaging Tips 💬
+## 💬 Error Messaging Tips
 - Mention the full path (e.g., `Aws.S3Credentials.AccessKeyId`) in your custom `onError` implementation so missing variables are obvious in logs.
 - Co-locate your schema definition with your application's bootstrap so failures happen before the app starts serving traffic.
 
