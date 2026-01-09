@@ -115,8 +115,6 @@ const Env = jetEnv(schema, {
 - Mention the full path (e.g., `Aws.S3Credentials.AccessKeyId`) in your custom `onError` implementation so missing variables are obvious in logs.
 - Co-locate your schema definition with your application's bootstrap so failures happen before the app starts serving traffic.
 
----
-
 <br/><b>***</b><br/>
 
 ## 📄 License 
